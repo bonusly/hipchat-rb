@@ -1,5 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
-require'tempfile'
+require 'tempfile'
 
 describe "HipChat (API V2)" do
 

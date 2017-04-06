@@ -161,6 +161,19 @@ module HipChat
       true
     end
 
+    def reply(parent_message_id, message)
+      query_params  = {auth_token: @token}.merge(@api.reply_config[:query_params])
+      body = {message: message, parent_message_id: parent_message_id}
+      response      = self.class.send( @api.reply_config[:method],
+                                       @api.reply_config[:url],
+                                       query: query_params,
+                                       body: body,
+                                       headers: @api.headers )
+
+      ErrorHandler.response_code_to_exception_for :room, 'all', response
+      response.parsed_response
+    end
+
     def share_link(from, message, link)
       if from.length > 20
         raise UsernameTooLong, "Username #{from} is `#{from.length} characters long. Limit is 20'"
@@ -405,16 +418,16 @@ module HipChat
     end
 
     private
-      def symbolize(obj)
-        return obj.reduce({}) do |memo, (k, v)|
-          memo.tap { |m| m[k.to_sym] = symbolize(v) }
-        end if obj.is_a? Hash
 
-        return obj.reduce([]) do |memo, v|
-          memo << symbolize(v); memo
-        end if obj.is_a? Array
-        obj
-      end
+    def symbolize(obj)
+      return obj.reduce({}) do |memo, (k, v)|
+        memo.tap { |m| m[k.to_sym] = symbolize(v) }
+      end if obj.is_a? Hash
 
+      return obj.reduce([]) do |memo, v|
+        memo << symbolize(v); memo
+      end if obj.is_a? Array
+      obj
+    end
   end
 end

@@ -186,6 +186,16 @@ module HipChat
         }[version]
       end
 
+      def reply_config
+        {
+            'v2' => {
+                :url => URI::escape("/#{room_id}/reply"),
+                :method => :post,
+                :query_params => { }
+            }
+        }[version]
+      end
+
       def send_file_config
         {
           'v2' => {
