@@ -60,7 +60,7 @@ module HipChat
       )
 
       ErrorHandler.response_code_to_exception_for :user, user_id, response
-      User.new(@token, response.merge(:api_version => @api.version))
+      User.new(@token, response.merge(:api_version => @api.version, :server_url => server_url))
     end
 
     #
@@ -114,20 +114,20 @@ module HipChat
     # password - User's password.  If not provided, the existing password is kept
     # email - REQUIRED - User's email
     def update(options = {})
-      name          = options[:name]    
+      name          = options[:name]
       roles         = options[:roles]   ? options[:roles] : nil
       title         = options[:title]   ? options[:title] : nil
       status        = options[:status]  ? options[:status] : nil
-      show          = options[:show]    ? options[:show] : nil 
-      mention_name  = options[:mention_name] 
+      show          = options[:show]    ? options[:show] : nil
+      mention_name  = options[:mention_name]
       is_group_admin = options[:is_group_admin] ? options[:is_group_admin] : nil
       timezone      = options[:timezone] ? options[:timezone] : 'UTC'
       password      = options[:password] ? options[:password] : nil
-      email         = options[:email] 
+      email         = options[:email]
 
       #create body format
       body = {
-        
+
       }
 
 
@@ -147,7 +147,7 @@ module HipChat
                                  .send(@api.user_update_config[:body_format]),
                                  :headers => @api.headers
       )
-      
+
       ErrorHandler.response_code_to_exception_for :user, user_id, response
     end
 
