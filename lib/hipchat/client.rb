@@ -98,7 +98,8 @@ module HipChat
     def _rooms
       response = self.class.get(@api.rooms_config[:url],
         :query => {
-          :auth_token => @token
+          :auth_token => @token,
+          'max-results' => 1000
         },
         :headers => @api.headers
       )
