@@ -162,13 +162,10 @@ module HipChat
     end
 
     def reply(parent_message_id, message)
-      query_params  = {auth_token: @token}.merge(@api.reply_config[:query_params])
-      body = {message: message, parent_message_id: parent_message_id}
-      response      = self.class.send( @api.reply_config[:method],
-                                       @api.reply_config[:url],
-                                       query: query_params,
-                                       body: body,
-                                       headers: @api.headers )
+      query_params  = { auth_token: @token }.merge(@api.reply_config[:query_params])
+      body          = { message: message, parent_message_id: parent_message_id }.send(@api.reply_config[:body_format])
+
+      response = self.class.post(@api.reply_config[:url], query: query_params, body: body, headers: @api.headers)
 
       ErrorHandler.response_code_to_exception_for :room, 'all', response
       response.parsed_response

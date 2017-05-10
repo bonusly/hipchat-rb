@@ -191,7 +191,8 @@ module HipChat
             'v2' => {
                 :url => URI::escape("/#{room_id}/reply"),
                 :method => :post,
-                :query_params => { }
+                :query_params => { },
+                :body_format => :to_json
             }
         }[version]
       end
